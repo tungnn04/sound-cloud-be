@@ -24,7 +24,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PlaylistService {
@@ -71,19 +70,15 @@ public class PlaylistService {
                 -> new AppException(ErrorCode.RESOURCE_NOT_EXISTED));
         playlistEntity.setName(dto.getName());
         playlistEntity.setUserId(user.getId());
-        playlistEntity.setCoverUrl("https://res.cloudinary.com/dcwopmt83/image/upload/v1743407599/playlist_default_no973y.jpg");
         playlistEntity.setCreatedAt(new Date());
 
         playlistRepository.save(playlistEntity);
     }
 
-    public void updatePlaylist(Integer id, PlaylistRequest dto) throws IOException {
+    public void updatePlaylist(Integer id, PlaylistRequest dto)  {
         Playlist playlist = playlistRepository.findById(id).orElseThrow(()
                 -> new AppException(ErrorCode.RESOURCE_NOT_EXISTED));
-        cloudinaryService.deleteFile(playlist.getCoverUrl());
         playlist.setName(dto.getName());
-        String url = cloudinaryService.uploadFile(dto.getCoverImage(), "playlist", true);
-        playlist.setCoverUrl(url);
 
         playlistRepository.save(playlist);
     }

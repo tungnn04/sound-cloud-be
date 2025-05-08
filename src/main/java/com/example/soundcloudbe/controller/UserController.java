@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/update")
-    public ResponseEntity<?> updateUser(@RequestParam String fullName, @RequestParam MultipartFile avatarImage) throws IOException {
+    public ResponseEntity<?> updateUser(@RequestParam String fullName, @RequestParam(required = false) MultipartFile avatarImage) throws IOException {
         UpdateUserRequest request = new UpdateUserRequest();
         request.setFullName(fullName);
         request.setAvatarImage(avatarImage);

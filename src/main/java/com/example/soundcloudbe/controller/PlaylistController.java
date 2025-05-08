@@ -53,10 +53,7 @@ public class PlaylistController {
     }
 
     @PostMapping("/update/{id}")
-    public ResponseEntity<?> updatePlaylist(@PathVariable("id") Integer id, @RequestParam String name, @RequestParam MultipartFile coverImage) throws IOException {
-        PlaylistRequest dto = new PlaylistRequest();
-        dto.setName(name);
-        dto.setCoverImage(coverImage);
+    public ResponseEntity<?> updatePlaylist(@PathVariable("id") Integer id, @RequestBody PlaylistRequest dto) {
         playlistService.updatePlaylist(id,dto);
         ApiResponse apiResponse = ApiResponse.builder()
                 .code(200)

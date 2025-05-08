@@ -283,9 +283,9 @@ public class SongServiceImpl implements SongService {
         StringBuilder str = new StringBuilder();
         str.append("SELECT s.ID, s.TITLE, ar.NAME AS ARTIST, al.TITLE AS ALBUM, c.NAME AS CATEGORY, s.DURATION, s.FILE_URL, s.COVER_URL, s.PLAY_COUNT, CASE WHEN f.SONG_ID IS NOT NULL THEN 'true' ELSE 'false' END AS IS_FAVORITE " +
                 "   FROM SONGS s " +
-                "       INNER JOIN ARTISTS ar on s.ARTIST_ID = ar.ID" +
+                "       LEFT JOIN ARTISTS ar on s.ARTIST_ID = ar.ID" +
                 "       LEFT JOIN ALBUMS al ON s.ALBUM_ID = al.ID" +
-                "       INNER JOIN CATEGORIES c ON s.CATEGORY_ID = c.ID" +
+                "       LEFT JOIN CATEGORIES c ON s.CATEGORY_ID = c.ID" +
                 "       LEFT JOIN (" +
                 "        SELECT * FROM FAVORITES WHERE USER_ID = :userId " +
                 "       ) f ON s.ID = f.SONG_ID " +

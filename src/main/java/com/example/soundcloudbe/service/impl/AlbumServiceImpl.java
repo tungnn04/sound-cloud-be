@@ -56,7 +56,7 @@ public class AlbumServiceImpl implements AlbumService {
                 albumResponse.setCoverUrl(DataConvertUtil.safeToString(e[3]));
                 albumResponse.setReleaseYear(DataConvertUtil.safeToInteger(e[4]));
 
-
+                albumResponse.setSongs(songService.searchByAlbumId(albumResponse.getId()));
                 res.add(albumResponse);
             });
         }

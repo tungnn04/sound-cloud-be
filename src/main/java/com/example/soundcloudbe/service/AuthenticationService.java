@@ -103,7 +103,7 @@ public class AuthenticationService {
         BeanUtils.copyProperties(request, newUser);
         newUser.setCreatedAt(new Date());
         newUser.setPasswordHash(passwordEncoder.encode(request.getPassword()));
-        newUser.setAvatarUrl("https://res.cloudinary.com/dcwopmt83/image/upload/v1743492436/user_default_qr93nz.png");
+
         userRepository.save(newUser);
     }
 

@@ -48,9 +48,11 @@ public class UserService {
         }
         String email = authentication.getName();
         User user = userRepository.findByEmail(email).orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_EXISTED));
-        cloudinaryService.deleteFile(user.getAvatarUrl());
+        if (request.getAvatarImage() != null) {
+            cloudinaryService.deleteFile(user.getAvatarUrl());
+            user.setAvatarUrl(cloudinaryService.uploadFile(request.getAvatarImage(), "user", true));
+        }
         user.setFullName(request.getFullName());
-        user.setAvatarUrl(cloudinaryService.uploadFile(request.getAvatarImage(), "user", true));
         userRepository.save(user);
     }
 

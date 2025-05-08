@@ -1,10 +1,6 @@
 package com.example.soundcloudbe.model.dto;
 
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-
-import java.util.Date;
 
 @Data
 public class UserResponse {
@@ -16,6 +12,6 @@ public class UserResponse {
 
     private String avatarUrl;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
-    private Date createdAt;
+//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss dd-MM-yyyy", timezone = "Asia/Ho_Chi_Minh")
+//    private Date createdAt;
 }
