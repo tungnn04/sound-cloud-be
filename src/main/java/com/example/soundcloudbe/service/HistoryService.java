@@ -34,6 +34,7 @@ public class HistoryService {
         History history = new History();
         history.setUserId(user.getId());
         history.setSongId(request.getSongId());
+        history.setPosition(request.getPosition());
         history.setListenedAt(new Date());
 
         historyRepository.save(history);

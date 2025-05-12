@@ -22,6 +22,9 @@ public class History {
     @Column(name = "SONG_ID", nullable = false)
     private Integer songId;
 
+    @Column(name = "POSITION", nullable = false)
+    private Integer position;
+
     @Column(name = "LISTENED_AT")
     private Date listenedAt;
 
