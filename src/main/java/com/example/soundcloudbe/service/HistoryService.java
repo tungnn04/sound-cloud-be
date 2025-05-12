@@ -39,6 +39,15 @@ public class HistoryService {
         historyRepository.save(history);
     }
 
+    public History getRecentlySong() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String email = authentication.getName();
+
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new  AppException(ErrorCode.RESOURCE_NOT_EXISTED));
+
+        return historyRepository.findByUserIdOrderByListenedAtDesc(user.getId());
+    }
+
     public Page<History> getAllHistory(Pageable pageable) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();

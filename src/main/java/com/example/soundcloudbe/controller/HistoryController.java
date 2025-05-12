@@ -1,7 +1,6 @@
 package com.example.soundcloudbe.controller;
 
 
-import com.cloudinary.Api;
 import com.example.soundcloudbe.entity.History;
 import com.example.soundcloudbe.model.dto.ApiResponse;
 import com.example.soundcloudbe.model.request.HistoryRequest;
@@ -34,8 +33,18 @@ public class HistoryController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/recently-song")
+    public ResponseEntity<?> getRecentlySong() {
+        ApiResponse apiResponse = ApiResponse.builder()
+                .code(200)
+                .data(mapper.valueToTree(historyService.getRecentlySong()))
+                .build();
+        return ResponseEntity.ok(apiResponse);
+    }
+
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody HistoryRequest request) {
+        historyService.saveHistory(request);
         ApiResponse apiResponse = ApiResponse.builder()
                 .code(200)
                 .message("Saved history successfully")

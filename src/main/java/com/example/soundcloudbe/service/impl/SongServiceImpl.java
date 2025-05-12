@@ -21,6 +21,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -314,6 +315,20 @@ public class SongServiceImpl implements SongService {
 
                 result.add(song);
             });
+        }
+        return result;
+    }
+
+    public List<SongResponse> getRelated(Integer id) {
+        Song song = songRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_EXISTED));
+        List<SongResponse> sameArtist = searchByArtistId(song.getArtistId());
+        List<SongResponse> result = new ArrayList<>(sameArtist);
+        if (sameArtist.isEmpty() || sameArtist.size() < 10) {
+            Page<SongResponse> sameCategory = findAll(new SearchSongRequest(null, song.getCategoryId()), PageRequest.of(0, 100));
+            sameCategory.getContent().stream()
+                    .filter(e -> !sameArtist.contains(e))
+                    .limit(10 - result.size())
+                    .forEach(result::add);
         }
         return result;
     }

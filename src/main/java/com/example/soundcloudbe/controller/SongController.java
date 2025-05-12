@@ -36,6 +36,12 @@ public class SongController {
         return ResponseEntity.ok(apiResponse);
     }
 
+    @GetMapping("/{id}/related")
+    public ResponseEntity<?> related(@PathVariable("id") Integer id) {
+
+    }
+    
+
     @PostMapping("/search")
     public ResponseEntity<?> search(@RequestParam(defaultValue = "0") @PositiveOrZero Integer page,
                                     @RequestParam(defaultValue = "1000") @Positive Integer size,
