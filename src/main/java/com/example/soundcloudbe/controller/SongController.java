@@ -38,7 +38,11 @@ public class SongController {
 
     @GetMapping("/{id}/related")
     public ResponseEntity<?> related(@PathVariable("id") Integer id) {
-
+        ApiResponse apiResponse = ApiResponse.builder()
+                .code(200)
+                .data(mapper.valueToTree(songService.getRelated(id)))
+                .build();
+        return ResponseEntity.ok(apiResponse);
     }
     
 

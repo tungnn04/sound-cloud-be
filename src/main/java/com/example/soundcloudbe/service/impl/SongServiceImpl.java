@@ -319,6 +319,7 @@ public class SongServiceImpl implements SongService {
         return result;
     }
 
+    @Override
     public List<SongResponse> getRelated(Integer id) {
         Song song = songRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_EXISTED));
         List<SongResponse> sameArtist = searchByArtistId(song.getArtistId());

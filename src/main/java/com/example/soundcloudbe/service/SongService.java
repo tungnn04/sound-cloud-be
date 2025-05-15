@@ -23,4 +23,6 @@ public interface SongService {
     List<SongResponse> searchByArtistId(Integer artistId);
 
     List<SongResponse> searchByUploadedBy(Integer userId);
+
+    List<SongResponse> getRelated(Integer id);
 }
