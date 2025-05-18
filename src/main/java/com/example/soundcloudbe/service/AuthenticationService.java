@@ -172,7 +172,7 @@ public class AuthenticationService {
         SecureRandom secureRandom = new SecureRandom();
         StringBuilder str = new StringBuilder();
 
-        for (int i = 0; i < 8; i++) {
+        for (int i = 0; i < 6; i++) {
             str.append(secureRandom.nextInt(10));
         }
         return str.toString();

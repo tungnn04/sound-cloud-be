@@ -4,10 +4,12 @@ import com.example.soundcloudbe.entity.History;
 import com.example.soundcloudbe.entity.User;
 import com.example.soundcloudbe.exception.AppException;
 import com.example.soundcloudbe.exception.ErrorCode;
+import com.example.soundcloudbe.model.dto.HistoryResponse;
 import com.example.soundcloudbe.model.request.HistoryRequest;
 import com.example.soundcloudbe.repository.HistoryRepository;
 import com.example.soundcloudbe.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -40,13 +42,19 @@ public class HistoryService {
         historyRepository.save(history);
     }
 
-    public History getRecentlySong() {
+    public HistoryResponse getRecentlySong() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
         User user = userRepository.findByEmail(email).orElseThrow(() -> new  AppException(ErrorCode.RESOURCE_NOT_EXISTED));
 
-        return historyRepository.findByUserIdOrderByListenedAtDesc(user.getId());
+        List<History> history = historyRepository.findByUserIdOrderByListenedAtDesc(user.getId());
+        HistoryResponse historyResponse = new HistoryResponse();
+        if (!history.isEmpty()) {
+            BeanUtils.copyProperties(history.getFirst(), historyResponse);
+            return historyResponse;
+        }
+        return null;
     }
 
     public Page<History> getAllHistory(Pageable pageable) {
