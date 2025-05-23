@@ -28,10 +28,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class SongServiceImpl implements SongService {
@@ -323,12 +320,13 @@ public class SongServiceImpl implements SongService {
     public List<SongResponse> getRelated(Integer id) {
         Song song = songRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.RESOURCE_NOT_EXISTED));
         List<SongResponse> sameArtist = searchByArtistId(song.getArtistId());
-        List<SongResponse> result = new ArrayList<>(sameArtist);
-        if (sameArtist.isEmpty() || sameArtist.size() < 10) {
+        List<SongResponse> result = new ArrayList<>();
+        sameArtist.stream().filter(e -> !Objects.equals(e.getId(), song.getId())).forEach(result::add);
+        if (result.isEmpty() || result.size() < 5) {
             Page<SongResponse> sameCategory = findAll(new SearchSongRequest(null, song.getCategoryId()), PageRequest.of(0, 100));
             sameCategory.getContent().stream()
                     .filter(e -> !sameArtist.contains(e))
-                    .limit(10 - result.size())
+                    .limit(5 - result.size())
                     .forEach(result::add);
         }
         return result;
