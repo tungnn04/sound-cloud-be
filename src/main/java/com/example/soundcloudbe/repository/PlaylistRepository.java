@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface PlaylistRepository extends JpaRepository<Playlist, Integer> {
     Playlist findByName(String name);
-    List<Playlist> findByUserId(Integer userId);
+    List<Playlist> findByUserIdOrderByCreatedAtAsc(Integer userId);
+    List<Playlist> findByUserIdOrderByCreatedAtDesc(Integer userId);
 }

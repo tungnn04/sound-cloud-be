@@ -23,8 +23,8 @@ public class PlaylistController {
     private ObjectMapper mapper;
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAll() {
-        List<PlaylistDTO> list = playlistService.findAll();
+    public ResponseEntity<?> findAll(@RequestParam("sortDesc") Boolean sortDesc) {
+        List<PlaylistDTO> list = playlistService.findAll(sortDesc);
         ApiResponse apiResponse = ApiResponse.builder()
                 .code(200)
                 .data(mapper.valueToTree(list))

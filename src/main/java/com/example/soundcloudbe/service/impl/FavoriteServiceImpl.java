@@ -31,7 +31,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     private EntityManager entityManager;
 
     @Override
-    public List<SongResponse> findAll() {
+    public List<SongResponse> findAll(Boolean sortDesc) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String email = authentication.getName();
 
@@ -45,9 +45,13 @@ public class FavoriteServiceImpl implements FavoriteService {
                 "       LEFT JOIN ARTISTS ar on s.ARTIST_ID = ar.ID " +
                 "       LEFT JOIN ALBUMS al ON s.ALBUM_ID = al.ID " +
                 "       LEFT JOIN CATEGORIES c ON s.CATEGORY_ID = c.ID " +
-                "    WHERE f.USER_ID = :userId" +
-                "    ORDER BY s.TITLE ASC");
-
+                "    WHERE f.USER_ID = :userId ");
+        if (sortDesc) {
+            str.append(" ORDER BY s.CREATED_AT DESC");
+        }
+        else {
+            str.append(" ORDER BY s.CREATED_AT ASC");
+        }
         Query query = entityManager.createNativeQuery(str.toString());
         query.setParameter("userId", user.getId());
 

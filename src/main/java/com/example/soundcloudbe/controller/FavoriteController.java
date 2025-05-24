@@ -16,10 +16,10 @@ public class FavoriteController {
     private ObjectMapper mapper;
 
     @GetMapping("/findAll")
-    public ResponseEntity<?> findAll() {
+    public ResponseEntity<?> findAll(@RequestParam("sortDesc") Boolean sortDesc) {
         ApiResponse apiResponse = ApiResponse.builder()
                 .code(200)
-                .data(mapper.valueToTree(favoriteService.findAll()))
+                .data(mapper.valueToTree(favoriteService.findAll(sortDesc)))
                 .build();
         return ResponseEntity.ok(apiResponse);
     }

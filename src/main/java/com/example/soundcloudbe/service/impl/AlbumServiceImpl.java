@@ -36,7 +36,7 @@ public class AlbumServiceImpl implements AlbumService {
         if (!DataUtil.isNullOrZero(request.getTitle())){
             str.append(" AND AL.TITLE LIKE '%").append(request.getTitle()).append("%'");
         }
-            str.append(" ORDER BY YEAR DESC ");
+        str.append(" ORDER BY AL.CREATED_AT DESC ");
         Query countQuery = entityManager.createNativeQuery("SELECT COUNT(*) FROM (" + str + ") temp");
         long totalElements = ((Number) countQuery.getSingleResult()).longValue();
 

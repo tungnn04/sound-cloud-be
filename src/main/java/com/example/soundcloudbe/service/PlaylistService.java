@@ -40,12 +40,17 @@ public class PlaylistService {
     @Autowired
     private CloudinaryService cloudinaryService;
 
-    public List<PlaylistDTO> findAll() {
+    public List<PlaylistDTO> findAll(Boolean sortDesc) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = userRepository.findByEmail(authentication.getName()).orElseThrow(()
                 -> new AppException(ErrorCode.RESOURCE_NOT_EXISTED));
-
-        List<Playlist> playlists = playlistRepository.findByUserId(user.getId());
+        List<Playlist> playlists;
+        if (sortDesc) {
+            playlists = playlistRepository.findByUserIdOrderByCreatedAtDesc(user.getId());
+        }
+        else {
+            playlists = playlistRepository.findByUserIdOrderByCreatedAtAsc(user.getId());
+        }
         List<PlaylistDTO> playlistDTOS = new ArrayList<>();
         if (playlists != null) {
             playlists.forEach(playlist -> {
@@ -113,6 +118,7 @@ public class PlaylistService {
                 -> new AppException(ErrorCode.RESOURCE_NOT_EXISTED));
         Song song = songRepository.findById(songId).orElseThrow(()
                 -> new AppException(ErrorCode.RESOURCE_NOT_EXISTED));
+        playlist.setCoverUrl(song.getCoverUrl());
         PlaylistSong playlistSong = playlistSongRepository.findByPlaylistIdAndSongId(playlistId, songId);
         if (playlistSong != null) {
             throw new AppException(ErrorCode.RESOURCE_EXISTED);
@@ -122,6 +128,7 @@ public class PlaylistService {
         entity.setPlaylistId(playlist.getId());
         entity.setSongId(song.getId());
 
+        playlistRepository.save(playlist);
         playlistSongRepository.save(entity);
     }
 
