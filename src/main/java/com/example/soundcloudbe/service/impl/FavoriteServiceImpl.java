@@ -47,10 +47,10 @@ public class FavoriteServiceImpl implements FavoriteService {
                 "       LEFT JOIN CATEGORIES c ON s.CATEGORY_ID = c.ID " +
                 "    WHERE f.USER_ID = :userId ");
         if (sortDesc) {
-            str.append(" ORDER BY s.CREATED_AT DESC");
+            str.append(" ORDER BY f.CREATED_AT DESC");
         }
         else {
-            str.append(" ORDER BY s.CREATED_AT ASC");
+            str.append(" ORDER BY f.CREATED_AT ASC");
         }
         Query query = entityManager.createNativeQuery(str.toString());
         query.setParameter("userId", user.getId());
